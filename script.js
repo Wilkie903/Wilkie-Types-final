@@ -3,8 +3,20 @@ const timerElement = document.getElementById('timer');
 const overlay = document.getElementById('overlay');
 const wpmElement = document.getElementById('wpm');
 const accuracyElement = document.getElementById('accuracy');
+const welcomeContainer = document.getElementById('welcome-container');
+const gameContainer = document.getElementById('game-container');
+const timeRange = document.getElementById('time-range');
+const timeDisplay = document.getElementById('time-display');
+const punctuationToggle = document.getElementById('punctuation-toggle');
+const numbersToggle = document.getElementById('numbers-toggle');
 
-const commonWords = ["the", "and", "you", "that", "was", "for", "on", "are", "with", "as", "his", "they", "at", "be", "this", "have", "from", "or", "one", "had", "by", "word", "but", "not", "what", "all", "were", "we", "when", "your", "can", "said", "there", "use", "an", "each", "which", "she", "do", "how", "their", "if", "will", "up", "other", "about", "out", "many", "then", "them", "these", "so", "some", "her", "would", "make", "like", "him", "into", "time", "has", "look", "two", "more", "write", "go", "see", "number", "no", "way", "could", "people", "my", "than", "first", "water", "been", "call", "who", "oil", "its", "now", "find", "long", "down", "day", "did", "get", "come", "made", "may", "part"];
+const infoButton = document.getElementById('info-button');
+const infoContainer = document.getElementById('info-container');
+const closeInfoButton = document.getElementById('close-info');
+
+const commonWords = ["the", "of", "and", "to", "a", "in", "is", "you", "that", "it"];
+const punctuationMarks = [".", ",", "!", "?", ":", ";"];
+const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
 let generatedText = '';
 let currentIndex = 0;
@@ -14,10 +26,22 @@ let timer;
 let countdownTimer;
 let startTime;
 let gameStarted = false;
+let gameTime = 30;
 
-function generateText() {
-    while (generatedText.length < 300) {
-        generatedText += commonWords[Math.floor(Math.random() * commonWords.length)] + ' ';
+timeRange.addEventListener('input', () => {
+    timeDisplay.textContent = `${timeRange.value}s`;
+});
+
+function generateText(includePunctuation, includeNumbers) {
+    const sourceArray = [...commonWords];
+    if (includePunctuation) {
+        sourceArray.push(...punctuationMarks);
+    }
+    if (includeNumbers) {
+        sourceArray.push(...numbers);
+    }
+    while (generatedText.split(' ').length < 150) {
+        generatedText += sourceArray[Math.floor(Math.random() * sourceArray.length)] + ' ';
     }
 }
 
@@ -39,7 +63,14 @@ function displayText() {
 }
 
 function startGame() {
-    generateText();
+    const includePunctuation = punctuationToggle.checked;
+    const includeNumbers = numbersToggle.checked;
+    gameTime = parseInt(timeRange.value);
+
+    welcomeContainer.style.display = 'none';
+    gameContainer.style.display = 'flex';
+
+    generateText(includePunctuation, includeNumbers);
     displayText();
     document.addEventListener('keydown', handleTyping);
 }
@@ -48,7 +79,7 @@ function handleTyping(e) {
     if (!gameStarted) {
         gameStarted = true;
         startTime = new Date().getTime();
-        timer = setTimeout(endGame, 30000);
+        timer = setTimeout(endGame, gameTime * 1000);
         countdownTimer = setInterval(updateTimer, 1000);
     }
 
@@ -65,8 +96,8 @@ function handleTyping(e) {
 }
 
 function updateTimer() {
-    const timeLeft = 30 - Math.floor((new Date().getTime() - startTime) / 1000);
-    timerElement.textContent = timeLeft;
+    const timeLeft = gameTime - Math.floor((new Date().getTime() - startTime) / 1000);
+    timerElement.textContent = `Time: ${timeLeft}`;
 }
 
 function endGame() {
@@ -89,8 +120,19 @@ function restartGame() {
     generatedText = '';
     gameStarted = false;
     textContainer.textContent = "Start typing to start";
-    timerElement.textContent = "30";
+    timerElement.textContent = `Time: ${gameTime}`;
     startGame();
 }
 
-startGame();
+function goToWelcomePage() {
+    gameContainer.style.display = 'none';
+    welcomeContainer.style.display = 'flex';
+}
+
+infoButton.addEventListener('click', () => {
+    infoContainer.style.display = 'block';
+});
+
+closeInfoButton.addEventListener('click', () => {
+    infoContainer.style.display = 'none';
+});

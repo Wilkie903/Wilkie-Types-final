@@ -11,6 +11,125 @@ body, html {
     color: white;
 }
 
+.welcome-container {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 2px solid #555;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    background-color: #2e2e2e;
+}
+
+.welcome-container h1 {
+    margin: 10px 0;
+    font-size: 3rem;
+    color: #fff;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.option label {
+    margin: 5px 0;
+    font-size: 1.2rem;
+}
+
+input[type="range"] {
+    width: 200px;
+    margin: 10px 0;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.welcome-container button, .results-card button, .info-button, .start-button, .results-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    margin: 5px 0;
+}
+
+.welcome-container button:hover, .results-card button:hover, .info-button:hover, .start-button:hover, .results-button:hover {
+    background-color: #555;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-container button:active, .results-card button:active, .info-button:active, .start-button:active, .results-button:active {
+    transform: translateY(2px);
+}
+
+.info-container {
+    display: none;
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
 .container {
     width: 80%;
     height: 80%;
@@ -19,17 +138,36 @@ body, html {
     align-items: center;
     justify-content: center;
     position: relative;
+    border: 2px solid #555;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    background-color: #2e2e2e;
 }
 
 .text-container {
-    font-size: 36px; /* Larger font size */
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
     color: grey;
     width: 100%;
     line-height: 1.5;
-    overflow: hidden;
+    overflow: auto;
     white-space: pre-wrap;
-    max-height: calc(1.5em * 15); /* Limit to 15 lines */
+    max-height: calc(1.5em * 10);
     text-align: center;
+    transition: opacity 0.3s, transform 0.3s;
+    word-break: break-word;
+    word-wrap: break-word;
+}
+
+.text-container.enter, .text-container.exit {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.text-container.enter-active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .timer {
@@ -48,28 +186,6 @@ body, html {
 
 .current {
     text-decoration: underline;
-}
-
-.how-to-play {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
-.how-to-play button {
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-.instructions {
-    display: none;
-    background-color: white;
-    padding: 10px;
-    border-radius: 5px;
-    position: absolute;
-    top: 40px;
-    right: 0;
-    width: 200px;
 }
 
 .overlay {
@@ -92,16 +208,9 @@ body, html {
     text-align: center;
 }
 
-.results-card button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
 .footer {
     position: absolute;
     bottom: 10px;
     right: 10px;
     color: white;
 }
-
